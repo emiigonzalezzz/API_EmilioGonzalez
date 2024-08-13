@@ -1,23 +1,14 @@
 <?php
-require_once '../Model/TableDAO.php';
+require_once "../Model/TablaDAO.php";
 
 $function = $_GET['function'];
 
 switch ($function) {
-    case "Obtener":
-        ObtenerProducto();
-        break;
-    case "Ingresar":
-        IngresarProducto();
+    case "Guardar":
+        GuardarProducto();
         break;
 }
-
-function ObtenerProducto()
-{
-    $resultado = (new Producto())->ObtenerProductoModel();
-    echo json_encode($resultado);
-}
-function IngresarProducto()
+function GuardarProducto()
 {
     $id = $_POST['id'];
     $producto = $_POST['producto'];
@@ -25,7 +16,7 @@ function IngresarProducto()
     $link = $_POST['link'];
     $foto = $_POST['foto'];
     $precio = $_POST['precio'];
-    $resultado = (new Producto())->IngresarProductoModel($id, $producto, $titulo, $link, $foto, $precio, );
+    $resultado = (new Producto())->GuardarProductoModel($id, $producto, $titulo, $link, $foto, $precio, );
     echo json_encode($resultado);
 }
 ?>
