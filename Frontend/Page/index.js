@@ -18,25 +18,37 @@ async function ObtenerProductos(){
     tr.innerHTML+= `
    
         <td>${producto.title}</td>
-        <td>${producto.permalink}</td>
-        <td>${producto.thumbnail}</td>
+        <td><a href = "${producto.permalink}">Entrar</td>
+        <td><img src="${producto.thumbnail}"></td>
         <td>${producto.price}</td>
 `;
+    let button = document.createElement("button");
+    button.innerHTML="Guardar";
+    tr.appendChild(button);
+    button.onclick = ()=>{
+    GuardarProductos(producto);
+}
+    tbodyElement.appendChild(tr);
+});
 
-tbodyElement.appendChild(tr);
-   });
 }
     function GuardarProducto(){
-    let FormElement = document.querySelector("#guardar")
+    let FormElement = document.querySelector("#Guardar")
 
     FormElement.onsubmit = async (e) =>{
         e.preventDefault()
-        let DivData = new FormData(FormElement);
+        let FormData = new FormData(FormElement);
         let url = "http://localhost/API_EmilioGonzalez/Backend/Controller/ControllerTabla.php?function=Guardar"
+
+        FormData.append("id", producto.id);
+        FormData.append("titulo", producto.titulo);
+        FormData.append("link", producto.link);
+        FormData.append("foto", producto.foto);
+        FormData.append("precio", producto.precio);
 
         let config = {
                 method: 'POST',
-                body: DivData
+                body: FormData
         }
 
         let respuesta = await fetch(url, config);
@@ -48,7 +60,7 @@ tbodyElement.appendChild(tr);
         }else{
             console.log("Guardado correctamente");
             alert("Guardado correctamente");
-            document.getElementById("guardar").reset();
+            document.getElementById("Guardar").reset();
         }
     }
     }
