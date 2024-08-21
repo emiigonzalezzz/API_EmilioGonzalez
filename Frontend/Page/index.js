@@ -23,46 +23,35 @@ async function ObtenerProductos(){
         <td>${producto.price}</td>
 `;
     let button = document.createElement("button");
-    button.innerHTML="Guardar";
-    tr.appendChild(button);
-    button.onclick = ()=>{
-    GuardarProductos(producto);
-}
+    button.onclick = ()=>{GuardarProducto(producto)};
+    let td = document.createElement("td");
+    td.appendChild(button);
+    tr.appendChild(td);
     tbodyElement.appendChild(tr);
+    button.textContent = "Guardar";
 });
 
 }
-    function GuardarProducto(){
-    let FormElement = document.querySelector("#Guardar")
+    async function GuardarProducto(producto){
+    console.log(producto);
+    let url = "http://localhost/API_EmilioGonzalez/Backend/Controller/ControllerTabla.php?function=Guardar";
+    let formData = new FormData();
 
-    FormElement.onsubmit = async (e) =>{
-        e.preventDefault()
-        let FormData = new FormData(FormElement);
-        let url = "http://localhost/API_EmilioGonzalez/Backend/Controller/ControllerTabla.php?function=Guardar"
+    formData.append("id", producto.id);
+    formData.append("titulo", producto.title);
+    formData.append("link", producto.permalink);
+    formData.append("foto", producto.thumbnail);
+    formData.append("precio", producto.price);
 
-        FormData.append("id", producto.id);
-        FormData.append("titulo", producto.titulo);
-        FormData.append("link", producto.link);
-        FormData.append("foto", producto.foto);
-        FormData.append("precio", producto.precio);
-
-        let config = {
-                method: 'POST',
-                body: FormData
-        }
-
-        let respuesta = await fetch(url, config);
-        let datos = await respuesta.json();
-        console.log(datos);
-    
-        if (datos !=true){
-            console.log("Ya existen");
-        }else{
-            console.log("Guardado correctamente");
-            alert("Guardado correctamente");
-            document.getElementById("Guardar").reset();
-        }
+    let config = {
+        method: 'POST',
+        body: formData
     }
-    }
+
+    let respuesta = await fetch(url, config);
+    let rec = await respuesta.json();
+    console.log(rec);
+}
+
 
 
